@@ -1,0 +1,69 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+
+# Gradle
+.gradle/
+out/
+
+# Compiled bytecode
+*.class
+
+# Log files
+*.log
+
+# macOS-specific files
+.DS_Store
+
+# Gradle Wrapper
+gradle/wrapper/gradle-wrapper.properties
+gradle/wrapper/gradle-wrapper.jar
+
+# Eclipse
+.settings/
+
+# Logs
+log/
+
+# Local application properties
+src/main/resources/application-local.properties
+
+# Generated files
+bin/
+
+# IntelliJ IDEA
+.idea/
+
