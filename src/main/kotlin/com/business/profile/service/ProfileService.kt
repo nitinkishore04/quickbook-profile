@@ -1,5 +1,6 @@
 package com.business.profile.service
 
+import com.business.profile.exception.ProfileNotFoundException
 import com.business.profile.model.BusinessProfile
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -28,8 +29,8 @@ class ProfileService(val repository: BusinessProfileRepository) {
     }
 
     fun deleteProfileById(id: String) {
-        if (repository.existsById(id)) {
-//            return null
+        if (!repository.existsById(id)) {
+            throw ProfileNotFoundException("Business Profile with id = $id not found")
         }
         repository.deleteById(id)
     }
