@@ -27,7 +27,7 @@ class HealthIndicator : HealthIndicator  {
     fun checkMongoConnection() : Boolean {
         return try {
             val mongoClient = MongoClients.create(mongoUri)
-            val dbName = "BusinessProfile"
+            val dbName = "businessprofile"
             val database: MongoDatabase = mongoClient.getDatabase(dbName)
             val collectionList = database.listCollectionNames().toList();
             log?.info(collectionList.toString())

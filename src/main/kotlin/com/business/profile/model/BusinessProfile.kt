@@ -3,7 +3,7 @@ package com.business.profile.model
 import java.util.UUID
 
 data class BusinessProfile(
-    val id: UUID? = UUID.randomUUID(),
+    val id: String? = UUID.randomUUID().toString(),
     val companyName: String,
     val legalName: String,
     val businessAddress: BusinessAddress,
