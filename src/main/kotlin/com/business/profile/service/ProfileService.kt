@@ -18,4 +18,12 @@ class ProfileService(val repository: BusinessProfileRepository) {
     fun fetchAllProfiles(): MutableList<BusinessProfile> {
         return repository.findAll()
     }
+
+    fun updateProfile(id: String, profile: BusinessProfile): BusinessProfile? {
+        if (repository.existsById(id)) {
+            profile.id = id
+            return repository.save(profile)
+        }
+        return null
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -38,5 +39,17 @@ class ProfileController(private val service: ProfileService) {
     }
 
 
+    @PutMapping("/update/{id}")
+    fun updateBusinessProfile(
+        @PathVariable id: String,
+        @RequestBody profile: BusinessProfile
+    ):  ResponseEntity<Any> {
+        val updatedProfile = service.updateProfile(id, profile)
+        return if (updatedProfile != null) {
+            ResponseEntity.ok(profile)
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body("No profile found for id = $id")
+        }
+    }
 
 }
