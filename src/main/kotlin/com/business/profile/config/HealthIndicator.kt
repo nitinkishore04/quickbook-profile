@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.actuate.health.Health
 import org.springframework.stereotype.Component
 import org.springframework.boot.actuate.health.HealthIndicator
+import java.util.logging.Logger
 
 @Component
 class HealthIndicator : HealthIndicator  {
@@ -29,10 +30,14 @@ class HealthIndicator : HealthIndicator  {
             val dbName = "BusinessProfile"
             val database: MongoDatabase = mongoClient.getDatabase(dbName)
             val collectionList = database.listCollectionNames().toList();
-            println(collectionList)
+            log?.info(collectionList.toString())
             collectionList.isNotEmpty()
         } catch (e: Exception) {
             false
         }
+    }
+
+    companion object {
+        val log: Logger? = Logger.getLogger(HealthIndicator::class.java.name)
     }
 }
