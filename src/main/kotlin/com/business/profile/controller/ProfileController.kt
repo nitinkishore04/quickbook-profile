@@ -4,6 +4,7 @@ import com.business.profile.model.BusinessProfile
 import com.business.profile.service.ProfileService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -50,6 +51,12 @@ class ProfileController(private val service: ProfileService) {
         } else {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body("No profile found for id = $id")
         }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    fun deleteBusinessProfile(@PathVariable id: String): ResponseEntity<Any> {
+        service.deleteProfileById(id)
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Profile deleted for id = $id")
     }
 
 }

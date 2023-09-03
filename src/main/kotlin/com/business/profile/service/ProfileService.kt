@@ -26,4 +26,11 @@ class ProfileService(val repository: BusinessProfileRepository) {
         }
         return null
     }
+
+    fun deleteProfileById(id: String) {
+        if (repository.existsById(id)) {
+//            return null
+        }
+        repository.deleteById(id)
+    }
 }
