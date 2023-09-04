@@ -13,7 +13,7 @@ class ProfileService(val repository: BusinessProfileRepository) {
     }
 
     fun fetchProfileById(id: String): BusinessProfile? {
-        return repository.findByIdOrNull(id)
+        return repository.findById(id).orElse(null)
     }
 
     fun fetchAllProfiles(): MutableList<BusinessProfile> {
