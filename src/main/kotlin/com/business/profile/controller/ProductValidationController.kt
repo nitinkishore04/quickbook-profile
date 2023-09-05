@@ -42,4 +42,10 @@ class ProductValidationController(val service: ProductValidationService) {
         val subscribe = service.subscribeProduct(profileId, productList)
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(subscribe)
     }
+
+    @PutMapping("/verify/{profileId}")
+    fun verifyValidation(@PathVariable profileId: String, @RequestParam productName: String): ResponseEntity<Boolean> {
+        val validationProfile = service.verifyProductValidation(profileId, productName)
+        return ResponseEntity.status(HttpStatus.OK).body(validationProfile)
+    }
 }

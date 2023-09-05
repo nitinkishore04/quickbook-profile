@@ -52,4 +52,12 @@ class ProductValidationService(val repository: ProductionValidationRepository) {
         subs?.profileChangeValidated = Util.compareStringLists(subs?.validatedProduct!!, subs?.subscribedProduct!!)
         return repository.save(subs)
     }
+
+    fun verifyProductValidation(profileId: String, productName: String): Boolean {
+        if(!repository.existsByBusinessProfileId(profileId)) {
+            throw ProductValidationException("No Business Profile Found for id = $profileId")
+        }
+        val validationData = repository.findByBusinessProfileId(profileId)
+        return validationData?.validatedProduct?.contains(productName) == true
+    }
 }
