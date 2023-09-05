@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -43,9 +44,10 @@ class ProfileController(private val service: ProfileService) {
     @PutMapping("/update/{id}")
     fun updateBusinessProfile(
         @PathVariable id: String,
-        @RequestBody profile: BusinessProfile
+        @RequestParam productName: String,
+        @RequestBody profile: BusinessProfile,
     ):  ResponseEntity<Any> {
-        val updatedProfile = service.updateProfile(id, profile)
+        val updatedProfile = service.updateProfile(id, profile, productName)
         return if (updatedProfile != null) {
             ResponseEntity.ok(profile)
         } else {
