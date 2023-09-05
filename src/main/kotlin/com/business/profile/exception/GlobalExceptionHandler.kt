@@ -13,8 +13,13 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.message)
     }
 
-    @ExceptionHandler(Exception::class)
-    fun handleException(ex: ProfileNotFoundException): ResponseEntity<String> {
+    @ExceptionHandler(ProductValidationException::class)
+    fun handleValidationException(ex: ProductValidationException): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.message)
+    }
+
+    @ExceptionHandler(Exception::class)
+    fun handleException(ex: Exception): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.message)
     }
 }
