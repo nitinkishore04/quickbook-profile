@@ -1,5 +1,6 @@
 package com.business.profile.service
 
+import com.business.profile.dto.ProductSubscriptionList
 import com.business.profile.exception.ProductValidationException
 import com.business.profile.model.ProductValidation
 import org.springframework.stereotype.Service
@@ -20,6 +21,15 @@ class ProductValidationService(val repository: ProductionValidationRepository) {
         }
         val validationProfile = ProductValidation(businessProfileId = profileId)
         return repository.save(validationProfile)
+    }
+
+    fun subscribeProduct(profileId: String, productList: ProductSubscriptionList): ProductValidation {
+        if(!repository.existsByBusinessProfileId(profileId)) {
+            throw ProductValidationException("No Business Profile Found for id = $profileId")
+        }
+        val subs = repository.findByBusinessProfileId(profileId)
+        subs?.subscribedProduct = productList.subscribedProduct
+        return repository.save(subs!!)
     }
 
     fun updateValidationProfile(profileId: String, productName: String): ProductValidation {
