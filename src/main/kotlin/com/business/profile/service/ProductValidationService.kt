@@ -29,7 +29,8 @@ class ProductValidationService(val repository: ProductionValidationRepository) {
         }
         val subs = repository.findByBusinessProfileId(profileId)
         subs?.subscribedProduct = productList.subscribedProduct
-        return repository.save(subs!!)
+        subs?.profileChangeValidated = subs?.subscribedProduct!!.size == subs?.validatedProduct!!.size
+        return repository.save(subs)
     }
 
     fun updateValidationProfile(profileId: String, productName: String): ProductValidation {
