@@ -3,6 +3,7 @@ package com.business.profile.service
 import com.business.profile.exception.ProfileNotFoundException
 import com.business.profile.model.BusinessAddress
 import com.business.profile.model.BusinessProfile
+import com.business.profile.model.ProductValidation
 import com.business.profile.model.TaxIdentifiers
 import com.mongodb.assertions.Assertions.assertNotNull
 import com.mongodb.assertions.Assertions.assertNull
@@ -23,6 +24,9 @@ class ProfileServiceTest {
 
     @Mock
     private lateinit var repository: BusinessProfileRepository
+
+    @Mock
+    private lateinit var validationRepository: ProductionValidationRepository
 
 
     @Test
@@ -63,8 +67,9 @@ class ProfileServiceTest {
     fun whenUserTriesToUpdateValidProfile_thenProfileShouldBeUpdated() {
         Mockito.`when`(repository.existsById(Mockito.any(String::class.java))).thenReturn(true)
         Mockito.`when`(repository.save(Mockito.any(BusinessProfile::class.java))).thenReturn(giveDummyProfile("Updated Name"))
+        Mockito.`when`(validationRepository.findByBusinessProfileId("test")).thenReturn(getDummyValidationData())
 
-        val result = service.updateProfile("123", giveDummyProfile("Updated Name"))
+        val result = service.updateProfile("123", giveDummyProfile("Updated Name"), "TestProduct")
 
         assertNotNull(result)
         Assertions.assertEquals(result?.companyName,"Updated Name")
@@ -74,7 +79,7 @@ class ProfileServiceTest {
     @Test
     fun whenUserTriesToUpdateInvalidProfile_thenProfileShouldNotBeUpdated() {
         Mockito.`when`(repository.existsById(Mockito.any(String::class.java))).thenReturn(false)
-        val result = service.updateProfile("123", giveDummyProfile("Updated Name"))
+        val result = service.updateProfile("123", giveDummyProfile("Updated Name"), "TestProduct")
         assertNull(result)
     }
 
@@ -87,6 +92,7 @@ class ProfileServiceTest {
 
     private fun giveDummyProfile(name: String?): BusinessProfile {
         return BusinessProfile(
+            id = "test",
             companyName = name?: "Test Name",
             legalName =  "Test name",
             businessAddress = BusinessAddress(line1 = "Test", line2 = "Test 2", city = "Test City", state = "State", zip = "test-zip", country = "India"),
@@ -94,6 +100,12 @@ class ProfileServiceTest {
             taxIdentifiers = TaxIdentifiers(pan = "test1234", ein = "test5678"),
             email = "test@test.com",
             website = "www.google.com"
+        )
+    }
+
+    private fun getDummyValidationData(): ProductValidation {
+        return ProductValidation(
+            businessProfileId = "test"
         )
     }
 }
