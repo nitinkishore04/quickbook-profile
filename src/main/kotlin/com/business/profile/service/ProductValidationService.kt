@@ -39,17 +39,14 @@ class ProductValidationService(val repository: ProductionValidationRepository) {
             throw ProductValidationException("No Business Profile Found for id = $profileId")
         }
         val subs = repository.findByBusinessProfileId(profileId)
-        if (subs?.validatedProduct != null) {
-            if (productName in subs.validatedProduct!!) {
-                throw ProductValidationException("Product = $productName has already been validated ")
-            }
-            val newValidatedList = subs.validatedProduct!! + productName
-            subs.validatedProduct = newValidatedList
-        } else {
-            val validatedProduct = listOf(productName)
-            subs?.validatedProduct = validatedProduct
+
+        if (productName in subs?.validatedProduct!!) {
+            throw ProductValidationException("Product = $productName has already been validated ")
         }
-        subs?.profileChangeValidated = Util.compareStringLists(subs?.validatedProduct!!, subs?.subscribedProduct!!)
+        val newValidatedList = subs.validatedProduct!! + productName
+        subs.validatedProduct = newValidatedList
+
+        subs.profileChangeValidated = Util.compareStringLists(subs.validatedProduct!!, subs?.subscribedProduct!!)
         return repository.save(subs)
     }
 
