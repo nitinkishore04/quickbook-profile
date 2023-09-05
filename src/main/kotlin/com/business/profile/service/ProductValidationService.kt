@@ -3,6 +3,7 @@ package com.business.profile.service
 import com.business.profile.dto.ProductSubscriptionList
 import com.business.profile.exception.ProductValidationException
 import com.business.profile.model.ProductValidation
+import com.business.profile.util.Util
 import org.springframework.stereotype.Service
 
 @Service
@@ -29,7 +30,7 @@ class ProductValidationService(val repository: ProductionValidationRepository) {
         }
         val subs = repository.findByBusinessProfileId(profileId)
         subs?.subscribedProduct = productList.subscribedProduct
-        subs?.profileChangeValidated = subs?.subscribedProduct!!.size == subs?.validatedProduct!!.size
+        subs?.profileChangeValidated = Util.compareStringLists(subs?.validatedProduct!!, subs.subscribedProduct!!)
         return repository.save(subs)
     }
 
@@ -48,6 +49,7 @@ class ProductValidationService(val repository: ProductionValidationRepository) {
             val validatedProduct = listOf(productName)
             subs?.validatedProduct = validatedProduct
         }
-        return repository.save(subs!!)
+        subs?.profileChangeValidated = Util.compareStringLists(subs?.validatedProduct!!, subs?.subscribedProduct!!)
+        return repository.save(subs)
     }
 }
