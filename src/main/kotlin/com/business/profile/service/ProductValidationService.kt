@@ -35,10 +35,15 @@ class ProductValidationService(val repository: ProductionValidationRepository) {
     }
 
     fun updateValidationProfile(profileId: String, productName: String): ProductValidation {
+
         if(!repository.existsByBusinessProfileId(profileId)) {
             throw ProductValidationException("No Business Profile Found for id = $profileId")
         }
         val subs = repository.findByBusinessProfileId(profileId)
+
+        if(!validProduct(productName, subs?.subscribedProduct)) {
+            throw ProductValidationException("$productName is not subscribed by the Business")
+        }
 
         if (productName in subs?.validatedProduct!!) {
             throw ProductValidationException("Product = $productName has already been validated ")
@@ -48,6 +53,13 @@ class ProductValidationService(val repository: ProductionValidationRepository) {
 
         subs.profileChangeValidated = Util.compareStringLists(subs.validatedProduct!!, subs?.subscribedProduct!!)
         return repository.save(subs)
+    }
+
+    private fun validProduct(productName: String, subscribedProduct: List<String>?): Boolean {
+        if (subscribedProduct != null) {
+            return productName in subscribedProduct
+        }
+        return false
     }
 
     fun verifyProductValidation(profileId: String, productName: String): Boolean {
