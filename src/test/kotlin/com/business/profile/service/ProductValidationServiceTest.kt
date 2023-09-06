@@ -84,6 +84,16 @@ class ProductValidationServiceTest{
     }
 
     @Test
+    fun whenUserRequestValidationFromUnsubscribedProduct_thenItShouldThrowException() {
+        Mockito.`when`(repository.existsByBusinessProfileId("test")).thenReturn(true)
+        Mockito.`when`(repository.findByBusinessProfileId("test")).thenReturn(getDummyValidationData())
+
+        Assertions.assertThrows(ProductValidationException::class.java) {
+            service.updateValidationProfile("test", "SomeProduct")
+        }
+    }
+
+    @Test
     fun whenUserSendsValidDataForValidation_butProductHasAlreadyValidated_thenItShouldThrowException() {
         Mockito.`when`(repository.existsByBusinessProfileId("test")).thenReturn(true)
         Mockito.`when`(repository.findByBusinessProfileId("test")).thenReturn(getDummyValidationData())
@@ -125,7 +135,8 @@ class ProductValidationServiceTest{
     private fun getDummyValidationData(): ProductValidation {
         return ProductValidation(
             businessProfileId = "test",
-            validatedProduct = listOf("TSheet")
+            validatedProduct = listOf("TSheet"),
+            subscribedProduct = listOf("QBPayroll", "TSheet")
         )
     }
 
